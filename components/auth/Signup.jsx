@@ -24,7 +24,7 @@ const Signup = ({ handleSignup, error }) => {
                 onChange={handleChange} className="mt-2 mb-2" fullWidth />
             <TextField variant="standard" name="github" type="url" label="GitHub Link"
                 onChange={handleChange} className="mt-2 mb-3" fullWidth />
-            <p className="text-danger">{error}</p>
+            <p className="text-danger"><b>{error}</b></p>
             <Button color="primary" disabled={loading} onClick={() => {
                 handleSignup(form);
                 setLoading(true);

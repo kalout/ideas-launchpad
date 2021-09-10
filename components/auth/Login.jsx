@@ -20,7 +20,7 @@ const Login = ({ handleLogin, error }) => {
                 onChange={handleChange} className="mb-2" fullWidth />
             <TextField variant="standard" name="password" type="password" label="Password"
                 onChange={handleChange} className="mt-2 mb-3" fullWidth />
-            <p className="text-danger">{error}</p>
+            <p className="text-danger"><b>{error}</b></p>
             <Button color="primary" disabled={loading} onClick={() => {
                 handleLogin(form);
                 setLoading(true);

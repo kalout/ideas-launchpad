@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
 html,
 body {
 	padding: 0;
@@ -24,6 +26,15 @@ a {
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 	min-width: 800px;
+}
+
+#logo {
+	font-family: 'Anton', sans-serif;
+	letter-spacing: 1.5px;
+}
+
+.cursor {
+	cursor: pointer;
 }
 
 @media only screen and (max-width: 600px) {

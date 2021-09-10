@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Login from './../components/Login';
-import Signup from './../components/Signup';
+import Login from '../components/auth/Login';
+import Signup from '../components/auth/Signup';
 import axios from 'axios';
 import Head from 'next/head';
 import Router from 'next/router';
@@ -12,21 +12,27 @@ const Auth = () => {
 
     // Login
     const [loginError, setLoginError] = useState("");
-    const handleLogin = form => axios.post('/api/users/login', form)
-        .then(({ data }) => {
+    const handleLogin = async form => {
+        try {
+            const { data } = await axios.post('/api/users/login', form);
             setLocalStorage(data);
             Router.push('/');
-        })
-        .catch(error => setLoginError(error?.response?.data?.message));
+        } catch (error) {
+            setLoginError(error?.response?.data?.message)
+        }
+    }
 
     // Signup
     const [signupError, setSignupError] = useState("");
-    const handleSignup = form => axios.post('/api/users/signup', form)
-        .then(({ data }) => {
+    const handleSignup = async form => {
+        try {
+            const { data } = await axios.post('/api/users/signup', form);
             setLocalStorage(data);
             Router.push('/');
-        })
-        .catch(error => setSignupError(error?.response?.data?.message));
+        } catch (error) {
+            setSignupError(error?.response?.data?.message)
+        }
+    }
 
     return (
         <div id="auth_form">
