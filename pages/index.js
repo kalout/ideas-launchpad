@@ -1,9 +1,10 @@
-const Index = () => {
+import { Container } from '@material-ui/core';
 
+const Index = () => {
     return (
-        <div>
+        <Container maxWidth="lg" className="p-3">
             <h1>Home</h1>
-        </div>
+        </Container>
     );
 }
 

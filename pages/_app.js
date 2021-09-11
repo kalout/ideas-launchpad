@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import Router from 'next/router';
 import 'bootstrap/dist/css/bootstrap.css'
+import 'font-awesome/css/font-awesome.min.css';
 import './../styles/globals.css';
 import decode from "jwt-decode";
 import delLocalStorage from './../utils/delLocalStorage';
