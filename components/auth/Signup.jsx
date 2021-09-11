@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { TextField, Button } from '@material-ui/core';
 
 const Signup = ({ handleSignup, error }) => {
-    const [form, setForm] = useState({ username: "", password: "", confirmPassword: "", github: "" });
+    const [form, setForm] = useState({ username: "", password: "", confirmPassword: "" });
     const [loading, setLoading] = useState(false);
 
     const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
@@ -22,9 +22,7 @@ const Signup = ({ handleSignup, error }) => {
                 onChange={handleChange} className="mt-2 mb-2" fullWidth />
             <TextField variant="standard" name="confirmPassword" type="password" label="Confirm Password"
                 onChange={handleChange} className="mt-2 mb-2" fullWidth />
-            <TextField variant="standard" name="github" type="url" label="GitHub Link"
-                onChange={handleChange} className="mt-2 mb-3" fullWidth />
-            <p className="text-danger"><b>{error}</b></p>
+            <p style={{ color: "#f50057" }}><b>{error}</b></p>
             <Button color="primary" disabled={loading} onClick={() => {
                 handleSignup(form);
                 setLoading(true);

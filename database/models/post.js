@@ -24,7 +24,8 @@ const postSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: new Date()
-    }
+    },
+    creator: String
 });
 
 export default mongoose?.models?.Post || mongoose?.model('Post', postSchema);

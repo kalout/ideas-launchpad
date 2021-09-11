@@ -16,7 +16,7 @@ const handler = async (req, res) => {
         if (password !== confirmPassword)
             return res.status(402).json({ message: "Passwords don't match !" });
 
-        const user = new User({ username: username, password: password, github: github });
+        const user = new User({ username: username, password: password });
         await user.save();
 
         const token = jwt.sign({

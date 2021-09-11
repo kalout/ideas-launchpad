@@ -6,6 +6,10 @@ const userSchema = new mongoose.Schema({
         unique: true
     },
     password: String,
+    bio: {
+        type: String,
+        maxlength: 200
+    },
     github: String,
     twitter: String,
     personal: String
