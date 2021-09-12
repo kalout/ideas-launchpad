@@ -5,6 +5,7 @@ import Modal from '@mui/material/Modal';
 import { TextField, Button } from '@material-ui/core';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { addPost } from './../../utils/apiCalls';
+import Router from 'next/router';
 
 const style = {
     position: 'absolute',
@@ -28,10 +29,12 @@ const NewPostModal = ({ open, handleClose }) => {
 
     const handleSubmit = async () => {
         try {
-            await addPost(form);
+            const res = await addPost(form);
             setForm({ title: "", body: "", tags: [] });
             setError('');
             handleClose();
+            if (res?.status === 200)
+                Router.push('/');
         } catch (error) {
             setError(error?.response?.data?.message);
         }
