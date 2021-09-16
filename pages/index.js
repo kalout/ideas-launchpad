@@ -33,10 +33,12 @@ export const getStaticProps = async context => {
                 downVotes: post?.downVotes,
                 tags: post?.tags,
                 createdAt: String(post?.createdAt),
-                creator: post?.creator
+                creator: post?.creator,
+                status: post?.status ? post?.status : '',
+                creatorUsername: post?.creatorUsername ? post?.creatorUsername : '',
             }))
         },
-        revalidate: 1
+        revalidate: 5
     }
 }
 

@@ -23,7 +23,7 @@ const Posts = ({ posters }) => {
             }
         >
             <Grid container spacing={2}>
-                {posts?.map((p, i) => (<Post key={p?._id} post={p} />))}
+                {posts?.map((p, i) => <Post key={p?._id} post={p} />)}
             </Grid>
         </InfiniteScroll>
     );

@@ -37,6 +37,11 @@ a {
 	cursor: pointer;
 }
 
+.proposer {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
 @media only screen and (max-width: 600px) {
 	#auth_form {
 		min-width: 400px;

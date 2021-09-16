@@ -2,7 +2,10 @@ import connectDB from './../../../database/connectDB';
 import Post from './../../../database/models/post';
 import decode from 'jwt-decode';
 
-const getUserId = token => decode(token)?.id;
+const getUser = token => {
+    const decodedData = decode(token);
+    return { id: decodedData?.id, username: decodedData?.username };
+};
 
 const handler = async (req, res) => {
     try {
@@ -16,9 +19,9 @@ const handler = async (req, res) => {
 
             case 'POST':
                 const token = req?.headers?.authorization?.split(" ")[1];
-                let userId = getUserId(token);
+                let { id, username } = getUser(token);
 
-                if (!userId)
+                if (!id)
                     return res.status(400).json({ message: "Unauthorized !" });
 
                 const { title, body, tags } = req?.body;
@@ -26,10 +29,16 @@ const handler = async (req, res) => {
                 if (title?.length === 0 || body?.length === 0 || tags?.length === 0)
                     return res.status(404).json({ message: "Please fill all fields !" });
 
-                if (title?.length > 30 || body?.length > 300 || tags?.length > 5)
-                    return res.status(405).json({ message: "Please decrease the char count !" });
+                if (title?.length > 50 || body?.length > 500 || tags?.length > 5)
+                    return res.status(405).json({ message: "Please stick to the char count !" });
 
-                const newPost = new Post({ title: title, description: body, tags: tags, creator: userId });
+                const newPost = new Post({
+                    title: title,
+                    description: body,
+                    tags: tags,
+                    creator: id,
+                    creatorUsername: username
+                });
                 newPost.save();
 
                 res.status(200).json(newPost);

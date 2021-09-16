@@ -3,11 +3,11 @@ import mongoose from 'mongoose';
 const postSchema = new mongoose.Schema({
     title: {
         type: String,
-        maxlength: 30
+        maxlength: 50
     },
     description: {
         type: String,
-        maxlength: 300
+        maxlength: 500
     },
     upVotes: {
         type: [String],
@@ -25,7 +25,15 @@ const postSchema = new mongoose.Schema({
         type: Date,
         default: new Date()
     },
-    creator: String
+    status: {
+        type: String,
+        enum: ['ONGOING', 'NEW']
+    },
+    creator: {
+        type: String,
+        required: true
+    },
+    creatorUsername: String
 });
 
 export default mongoose?.models?.Post || mongoose?.model('Post', postSchema);

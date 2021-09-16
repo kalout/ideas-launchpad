@@ -7,6 +7,8 @@ import decode from "jwt-decode";
 import delLocalStorage from './../utils/delLocalStorage';
 import Navbar from './../components/layout/Navbar';
 
+// TODO: 'NEW' and 'ONGOING' selection with 'ONGOING' having link to a github repo
+
 function MyApp({ Component, pageProps }) {
 	useEffect(() => {
 		if (localStorage?.getItem('profile')) {

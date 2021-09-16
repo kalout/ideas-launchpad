@@ -47,13 +47,13 @@ const NewPostModal = ({ open, handleClose }) => {
                 <hr />
                 <TextField variant="standard" name="title" label="Title" autoComplete="off"
                     onChange={handleChange} className="mb-2" fullWidth value={form?.title} />
-                <small style={{ float: "right", marginTop: "-9px" }} className={form?.title?.length > 30 && 'text-danger'}>
-                    {form?.title?.length} / 30
+                <small style={{ float: "right", marginTop: "-9px" }} className={form?.title?.length > 50 && 'text-danger'}>
+                    {form?.title?.length} / 50
                 </small>
                 <TextField variant="standard" name="body" label="Body" multiline autoComplete="off"
                     onChange={handleChange} rows={6} className="mt-2 mb-2" fullWidth value={form?.body} />
-                <small style={{ float: "right", marginTop: "-9px" }} className={form?.body?.length > 300 && 'text-danger'}>
-                    {form?.body?.length} / 300
+                <small style={{ float: "right", marginTop: "-9px" }} className={form?.body?.length > 500 && 'text-danger'}>
+                    {form?.body?.length} / 500
                 </small>
                 <TextField variant="standard" name="tags" label="Tags (comma separated)" autoComplete="off"
                     onChange={handleChange} className="mt-2 mb-2" fullWidth value={form?.tags} />
