@@ -42,6 +42,14 @@ a {
 	text-decoration: underline;
 }
 
+.tag {
+	cursor: pointer;
+}
+
+.tag:hover {
+	background-color: #d7d4d4;
+}
+
 @media only screen and (max-width: 600px) {
 	#auth_form {
 		min-width: 400px;

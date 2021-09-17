@@ -24,10 +24,13 @@ const handler = async (req, res) => {
                 if (!id)
                     return res.status(400).json({ message: "Unauthorized !" });
 
-                const { title, body, tags } = req?.body;
+                const { title, body, tags, status } = req?.body;
 
                 if (title?.length === 0 || body?.length === 0 || tags?.length === 0)
                     return res.status(404).json({ message: "Please fill all fields !" });
+
+                if (status !== 'NEW' && status !== 'ONGOING')
+                    return res.status(400).json({ message: "Status can only be 'New' or 'Ongoing' !" });
 
                 if (title?.length > 50 || body?.length > 500 || tags?.length > 5)
                     return res.status(405).json({ message: "Please stick to the char count !" });
@@ -37,7 +40,8 @@ const handler = async (req, res) => {
                     description: body,
                     tags: tags,
                     creator: id,
-                    creatorUsername: username
+                    creatorUsername: username,
+                    status: status
                 });
                 newPost.save();
 

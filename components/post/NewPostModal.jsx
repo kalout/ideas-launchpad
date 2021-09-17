@@ -6,6 +6,11 @@ import { TextField, Button } from '@material-ui/core';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { addPost } from './../../utils/apiCalls';
 import Router from 'next/router';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
 const style = {
     position: 'absolute',
@@ -19,7 +24,7 @@ const style = {
 };
 
 const NewPostModal = ({ open, handleClose }) => {
-    const [form, setForm] = useState({ title: "", body: "", tags: [] });
+    const [form, setForm] = useState({ title: "", body: "", tags: [], status: "NEW" });
     const [error, setError] = useState('');
 
     const handleChange = e => {
@@ -30,7 +35,7 @@ const NewPostModal = ({ open, handleClose }) => {
     const handleSubmit = async () => {
         try {
             const res = await addPost(form);
-            setForm({ title: "", body: "", tags: [] });
+            setForm({ title: "", body: "", tags: [], status: "NEW" });
             setError('');
             handleClose();
             if (res?.status === 200)
@@ -60,6 +65,13 @@ const NewPostModal = ({ open, handleClose }) => {
                 <small style={{ float: "right", marginTop: "-9px" }} className={form?.tags?.length > 5 && 'text-danger'}>
                     {form?.tags?.length} / 5
                 </small>
+                <FormControl component="fieldset" className="mt-4 mb-2">
+                    <FormLabel component="legend">Status</FormLabel>
+                    <RadioGroup value={form?.status} name="status" onChange={handleChange}>
+                        <FormControlLabel value="NEW" control={<Radio />} label="New" />
+                        <FormControlLabel value="ONGOING" control={<Radio />} label="Ongoing" />
+                    </RadioGroup>
+                </FormControl>
                 <p className='mt-3' style={{ color: "#f50057" }}><b>{error}</b></p>
                 <div className="mt-3">
                     <Button color="primary" variant="contained" onClick={handleSubmit}>

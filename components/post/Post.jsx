@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { getPostProposer } from './../../utils/apiCalls';
 import moment from 'moment';
 import Popover from '@mui/material/Popover';
+import Chip from '@mui/material/Chip';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
@@ -22,13 +23,23 @@ const Post = ({ post }) => {
         }
     }
 
+    const handleClick = tag => console.log(tag);
+
     return (
         <>
             <Grid item xs={12} md={4}>
                 <Paper elevation={3} style={{ padding: "15px" }} onMouseOver={handleHover}>
-                    <Typography variant="h5" component="h2">
-                        <Link href={`/post/${post?._id}`}>{post.title}</Link>
-                    </Typography>
+                    <Grid container>
+                        <Grid item xs={9}>
+                            <Typography variant="h5" component="h2">
+                                <Link href={`/post/${post?._id}`}>{post.title}</Link>
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={3} style={{ textAlign: "right" }}>
+                            <Chip label={post?.status} color={post?.status === 'NEW' ? 'warning' : 'primary'} variant="outlined" />
+                        </Grid>
+                    </Grid>
+
                     <hr />
 
                     <Typography variant="body1" component="p" display="inline">
@@ -36,47 +47,57 @@ const Post = ({ post }) => {
                     </Typography>
 
                     <div className="mt-3">
+                        {post?.tags?.map((tag, index) => (
+                            <span key={index} onClick={() => handleClick(tag)}>
+                                <Chip label={tag} className="tag" style={{ marginBottom: "5px", marginRight: "5px" }} />
+                            </span>
+                        ))}
+                    </div>
+
+                    <div className="mt-3">
                         <Grid container>
-                            <Grid item xs={6}>
-                                <Typography variant="subtitle1" style={{ fontWeight: "bold", color: "rgb(161, 161, 161)" }}
-                                    component="p">Proposer :&nbsp;
-                                    <span className="proposer" aria-owns={open ? 'mouse-over-popover' : undefined}
-                                        aria-haspopup="true"
-                                        onMouseEnter={handlePopoverOpen}
-                                        onMouseLeave={handlePopoverClose}
-                                    >
-                                        {post?.creatorUsername}
-                                    </span>
-                                </Typography>
+                            <Grid item xs={8}>
+                                buttons hon
                             </Grid>
-                            <Grid item xs={6} style={{ textAlign: "right" }}>
+                            <Grid item xs={4} style={{ textAlign: "right" }}>
                                 <Typography variant="subtitle1" style={{ fontWeight: "bold", color: "rgb(161, 161, 161)" }}
                                     component="p">
-                                    {moment(post?.createdAt)?.format('DD/MM/YYYY')?.split('/')?.join(' / ')}
+                                    {post?.upVotes - post?.downVotes} Votes
                                 </Typography>
                             </Grid>
                         </Grid>
                     </div>
+
+                    <hr></hr>
+
+                    <Grid container>
+                        <Grid item xs={6}>
+                            <Typography variant="subtitle1" style={{ fontWeight: "bold", color: "rgb(161, 161, 161)" }}
+                                component="p">Proposer :&nbsp;
+                                <span className="proposer" aria-owns={open ? 'mouse-over-popover' : undefined}
+                                    aria-haspopup="true"
+                                    onMouseEnter={handlePopoverOpen}
+                                    onMouseLeave={handlePopoverClose}
+                                >
+                                    {post?.creatorUsername}
+                                </span>
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6} style={{ textAlign: "right" }}>
+                            <Typography variant="subtitle1" style={{ fontWeight: "bold", color: "rgb(161, 161, 161)" }}
+                                component="p">
+                                {moment(post?.createdAt)?.format('DD/MM/YYYY')?.split('/')?.join(' / ')}
+                            </Typography>
+                        </Grid>
+                    </Grid>
                 </Paper>
             </Grid>
 
             <Popover
-                id="mouse-over-popover"
-                sx={{
-                    pointerEvents: 'none',
-                }}
-                open={open}
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                }}
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                }}
-                onClose={handlePopoverClose}
-                disableRestoreFocus
+                id="mouse-over-popover" sx={{ pointerEvents: 'none' }} open={open} anchorEl={anchorEl}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+                onClose={handlePopoverClose} disableRestoreFocus
             >
                 <div style={{ padding: "15px", maxWidth: "400px" }}>
                     {!proposer ?

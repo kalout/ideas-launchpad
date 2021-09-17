@@ -13,8 +13,14 @@ const handler = async (req, res) => {
         if (userExist)
             return res.status(401).json({ message: "Username already exist, please login !" });
 
+        if (username?.split(' ')?.length !== 1)
+            return res.status(402).json({ message: "Username can't have spaces !" });
+
+        if (username?.toLowerCase() !== username)
+            return res.status(403).json({ message: "Username must be lowercase !" });
+
         if (password !== confirmPassword)
-            return res.status(402).json({ message: "Passwords don't match !" });
+            return res.status(404).json({ message: "Passwords don't match !" });
 
         const user = new User({ username: username, password: password });
         await user.save();
