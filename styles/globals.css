@@ -50,6 +50,10 @@ a {
 	background-color: #d7d4d4;
 }
 
+.action-btn {
+	height: 25px;
+}
+
 @media only screen and (max-width: 600px) {
 	#auth_form {
 		min-width: 400px;

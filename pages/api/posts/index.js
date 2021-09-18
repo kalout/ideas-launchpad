@@ -1,11 +1,6 @@
 import connectDB from './../../../database/connectDB';
 import Post from './../../../database/models/post';
-import decode from 'jwt-decode';
-
-const getUser = token => {
-    const decodedData = decode(token);
-    return { id: decodedData?.id, username: decodedData?.username };
-};
+import jwt from 'jsonwebtoken';
 
 const handler = async (req, res) => {
     try {
@@ -19,9 +14,9 @@ const handler = async (req, res) => {
 
             case 'POST':
                 const token = req?.headers?.authorization?.split(" ")[1];
-                let { id, username } = getUser(token);
+                let { id, username } = jwt.verify(token, 'ThIs_Is_A_sEcReT_kEy');
 
-                if (!id)
+                if (!id || !username)
                     return res.status(400).json({ message: "Unauthorized !" });
 
                 const { title, body, tags, status } = req?.body;

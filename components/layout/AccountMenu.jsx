@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import Settings from '@mui/icons-material/Settings';

@@ -1,29 +1,57 @@
-import React, { useState } from 'react';
-import { Paper, Grid, Typography, Avatar, CircularProgress } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import { Paper, Grid, Typography, CircularProgress } from '@material-ui/core';
 import Link from 'next/link';
 import { getPostProposer } from './../../utils/apiCalls';
 import moment from 'moment';
 import Popover from '@mui/material/Popover';
 import Chip from '@mui/material/Chip';
+import Button from '@mui/material/Button';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import RemoveIcon from '@mui/icons-material/Remove';
+import { votePost } from './../../utils/apiCalls';
 
 const Post = ({ post }) => {
+    const [userId, setUserId] = useState('');
     const [proposer, setProposer] = useState();
     const [anchorEl, setAnchorEl] = useState(null);
+
+    const [upVotes, setUpVotes] = useState(post?.upVotes);
+    const [upVoted, setUpVoted] = useState(upVotes?.filter(id => id === userId)?.length > 0);
+
+    const [downVotes, setDownVotes] = useState(post?.downVotes);
+    const [downVoted, setDownVoted] = useState(downVotes?.filter(id => id === userId)?.length > 0);
+
+    useEffect(() => setUserId(JSON.parse(localStorage.getItem('profile'))?.profile?.user?._id), []);
+
+    useEffect(() => {
+        setUpVoted(upVotes?.filter(id => id === userId)?.length > 0);
+        setDownVoted(downVotes?.filter(id => id === userId)?.length > 0);
+    }, [upVotes, downVotes, userId, post]);
+
+    const handleVote = async vote => {
+        if (vote === 1) {
+            setDownVotes(downVotes?.filter(id => id !== userId));
+            setUpVotes([...upVotes, userId]);
+        } else if (vote === -1) {
+            setUpVotes(upVotes?.filter(id => id !== userId));
+            setDownVotes([...downVotes, userId]);
+        } else if (vote === 0) {
+            setUpVotes(upVotes?.filter(id => id !== userId));
+            setDownVotes(downVotes?.filter(id => id !== userId));
+        }
+        await votePost(post._id, vote);
+    }
 
     const handlePopoverOpen = (event) => setAnchorEl(event.currentTarget);
     const handlePopoverClose = () => setAnchorEl(null);
     const open = Boolean(anchorEl);
 
-    const handleHover = async () => {
-        if (!proposer) {
-            const { data } = await getPostProposer(post?.creator);
-            setProposer(data);
-        }
-    }
+    const handleHover = async () => !proposer && setProposer((await getPostProposer(post?.creator))?.data);
 
-    const handleClick = tag => console.log(tag);
+    const handleClick = tag => {
+        console.log(tag);
+    };
 
     return (
         <>
@@ -57,12 +85,23 @@ const Post = ({ post }) => {
                     <div className="mt-3">
                         <Grid container>
                             <Grid item xs={8}>
-                                buttons hon
+                                <Button size="small" variant="contained" color="primary" className='action-btn'
+                                    disabled={upVoted} onClick={() => handleVote(1)}>
+                                    <ExpandLessIcon />
+                                </Button>&nbsp;
+                                <Button size="small" variant="contained" color="primary" className='action-btn'
+                                    disabled={!upVoted && !downVoted} onClick={() => handleVote(0)}>
+                                    <RemoveIcon />
+                                </Button>&nbsp;
+                                <Button size="small" variant="contained" color="primary" className='action-btn'
+                                    disabled={downVoted} onClick={() => handleVote(-1)}>
+                                    <ExpandMoreIcon />
+                                </Button>
                             </Grid>
                             <Grid item xs={4} style={{ textAlign: "right" }}>
                                 <Typography variant="subtitle1" style={{ fontWeight: "bold", color: "rgb(161, 161, 161)" }}
                                     component="p">
-                                    {post?.upVotes - post?.downVotes} Votes
+                                    {upVotes?.length - downVotes?.length} Votes
                                 </Typography>
                             </Grid>
                         </Grid>
