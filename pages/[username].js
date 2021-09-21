@@ -2,12 +2,12 @@ import React from 'react';
 import Head from 'next/head';
 import connectDB from './../database/connectDB';
 import User from './../database/models/user';
+import Post from './../database/models/post';
 import { Container } from '@material-ui/core';
 import CircularProgress from '@mui/material/CircularProgress';
 import Profile from './../components/profile/Profile';
 
-const ProfilePage = ({ user }) => {
-    console.log(user);
+const ProfilePage = ({ user, posts }) => {
     return (
         <div>
             <Head>
@@ -17,19 +17,20 @@ const ProfilePage = ({ user }) => {
                 <span id='centery'><CircularProgress style={{ width: '100px', height: '100px' }} /></span>
             ) : (
                 <Container maxWidth='md' className='mt-4'>
-                    <Profile user={user} />
+                    <Profile user={user} posts={posts} />
                 </Container>
             )}
         </div>
     );
 }
 
-export const getStaticPaths = () => ({ paths: [], fallback: true }); // no pages will be built on build time
-
-export const getStaticProps = async context => {
+export const getServerSideProps = async context => {
     await connectDB();
-    const { username } = context.params;
-    const user = await User.findOne({ username: username });
+    const { username, tab } = context.query;
+    let user = await User.findOne({ username: username }), posts = [];
+
+    if (tab === 'posts')
+        posts = await Post.find({ creator: String(user._id) });
 
     return {
         props: {
@@ -38,7 +39,19 @@ export const getStaticProps = async context => {
                 username: user.username,
                 bio: user?.bio,
                 fullName: username?.fullName || ''
-            }
+            },
+            posts: posts?.map(post => ({
+                _id: String(post?._id),
+                title: post?.title,
+                description: post?.description,
+                upVotes: post?.upVotes,
+                downVotes: post?.downVotes,
+                tags: post?.tags,
+                createdAt: String(post?.createdAt),
+                creator: post?.creator,
+                status: post?.status ? post?.status : '',
+                creatorUsername: post?.creatorUsername ? post?.creatorUsername : ''
+            }))
         }
     };
 }

@@ -1,10 +1,13 @@
 import React from 'react';
 import Image from 'next/image';
 import { Grid } from '@material-ui/core';
+import Post from './../post/Post';
+import { useRouter } from 'next/router';
 
 const randomHex = () => (Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
 
-const Profile = ({ user }) => {
+const Profile = ({ user, posts }) => {
+    const router = useRouter();
     const src = `https://www.tinygraphs.com/spaceinvaders/${user?.username}?colors=${randomHex()}&colors=${randomHex()}`;
 
     return (
@@ -18,7 +21,15 @@ const Profile = ({ user }) => {
                     <h3 style={{ marginTop: '-8px', color: '#535C66' }}>{user?.username}</h3>
                 </Grid>
                 <Grid item xs={12} md={8}>
-                    <p id='bio'>{user?.bio}</p>
+                    {router?.query?.tab === 'overview' ? (
+                        <p id='bio'>{user?.bio}</p>
+                    ) : router?.query?.tab === 'posts' ? (
+                        <Grid container spacing={1}>
+                            {posts?.map(post => <Post key={post.id} post={post} profileView={true} />)}
+                        </Grid>
+                    ) : (
+                        <p id='bio'>{user?.bio}</p>
+                    )}
                 </Grid>
             </Grid>
         </div>

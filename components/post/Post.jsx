@@ -11,7 +11,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { votePost } from './../../utils/apiCalls';
 
-const Post = ({ post }) => {
+const Post = ({ post, profileView }) => {
     const [userId, setUserId] = useState('');
     const [proposer, setProposer] = useState();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -55,7 +55,7 @@ const Post = ({ post }) => {
 
     return (
         <>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={profileView ? 12 : 4}>
                 <Paper elevation={3} style={{ padding: "15px" }} onMouseOver={handleHover}>
                     <Grid container>
                         <Grid item xs={9}>
@@ -118,7 +118,7 @@ const Post = ({ post }) => {
                                     onMouseEnter={handlePopoverOpen}
                                     onMouseLeave={handlePopoverClose}
                                 >
-                                    <Link href={`/${post?.creatorUsername}`}>{post?.creatorUsername}</Link>
+                                    <Link href={`/${post?.creatorUsername}?tab=overview`}>{post?.creatorUsername}</Link>
                                 </span>
                             </Typography>
                         </Grid>

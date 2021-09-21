@@ -52,7 +52,7 @@ const AccountMenu = ({ anchorEl, open, handleClose, user }) => {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem onClick={() => router.push(`/${user?.username}`)}>
+                <MenuItem onClick={() => router.push(`/${user?.username}?tab=overview`)}>
                     <Avatar>{user?.username?.charAt(0)}</Avatar> {user?.username}
                 </MenuItem>
                 <Divider />
