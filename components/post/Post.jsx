@@ -30,6 +30,7 @@ const Post = ({ post }) => {
     }, [upVotes, downVotes, userId, post]);
 
     const handleVote = async vote => {
+        await votePost(post._id, vote);
         if (vote === 1) {
             setDownVotes(downVotes?.filter(id => id !== userId));
             setUpVotes([...upVotes, userId]);
@@ -40,7 +41,6 @@ const Post = ({ post }) => {
             setUpVotes(upVotes?.filter(id => id !== userId));
             setDownVotes(downVotes?.filter(id => id !== userId));
         }
-        await votePost(post._id, vote);
     }
 
     const handlePopoverOpen = (event) => setAnchorEl(event.currentTarget);
@@ -118,7 +118,7 @@ const Post = ({ post }) => {
                                     onMouseEnter={handlePopoverOpen}
                                     onMouseLeave={handlePopoverClose}
                                 >
-                                    {post?.creatorUsername}
+                                    <Link href={`/${post?.creatorUsername}`}>{post?.creatorUsername}</Link>
                                 </span>
                             </Typography>
                         </Grid>

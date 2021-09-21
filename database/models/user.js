@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         maxlength: 200
     },
+    fullName: String,
     github: String,
     twitter: String,
     personal: String

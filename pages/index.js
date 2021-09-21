@@ -4,6 +4,8 @@ import Post from './../database/models/post';
 import connectDB from './../database/connectDB';
 import Posts from './../components/post/Posts';
 
+// TODO: add contibuter list, only the proposer(creator) can modify them
+
 const Index = ({ posts }) => {
     return (
         <>

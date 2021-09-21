@@ -9,6 +9,7 @@ import Logout from '@mui/icons-material/Logout';
 import delLocalStorage from './../../utils/delLocalStorage';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import NewPostModal from './../post/NewPostModal';
+import router from 'next/router';
 
 const AccountMenu = ({ anchorEl, open, handleClose, user }) => {
     const [openPM, setOpenPM] = useState(false);
@@ -51,7 +52,7 @@ const AccountMenu = ({ anchorEl, open, handleClose, user }) => {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem>
+                <MenuItem onClick={() => router.push(`/${user?.username}`)}>
                     <Avatar>{user?.username?.charAt(0)}</Avatar> {user?.username}
                 </MenuItem>
                 <Divider />

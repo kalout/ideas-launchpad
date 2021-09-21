@@ -6,11 +6,11 @@ import { TextField, Button } from '@material-ui/core';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { addPost } from './../../utils/apiCalls';
 import Router from 'next/router';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 
 const style = {
     position: 'absolute',
@@ -67,9 +67,9 @@ const NewPostModal = ({ open, handleClose }) => {
                 </small>
                 <FormControl component="fieldset" className="mt-4 mb-2">
                     <FormLabel component="legend">Status</FormLabel>
-                    <RadioGroup value={form?.status} name="status" onChange={handleChange}>
-                        <FormControlLabel value="NEW" control={<Radio />} label="New" />
-                        <FormControlLabel value="ONGOING" control={<Radio />} label="Ongoing" />
+                    <RadioGroup row value={form?.status} name="status" onChange={handleChange}>
+                        <FormControlLabel value="NEW" control={<Radio color='primary' />} label="New" />
+                        <FormControlLabel value="ONGOING" control={<Radio color='primary' />} label="Ongoing" />
                     </RadioGroup>
                 </FormControl>
                 <p className='mt-3' style={{ color: "#f50057" }}><b>{error}</b></p>

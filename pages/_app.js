@@ -11,13 +11,13 @@ import Navbar from './../components/layout/Navbar';
 
 function MyApp({ Component, pageProps }) {
 	useEffect(() => {
-		if (localStorage?.getItem('profile')) {
+		if (localStorage?.getItem('profile') && Router.pathname === '/auth') {
 			Router?.push('/');
 			const decodedData = decode(JSON.parse(localStorage.getItem('profile'))?.profile?.token);
 
 			if (decodedData?.exp * 1000 < new Date().getTime())
 				delLocalStorage();
-		} else {
+		} else if (!localStorage?.getItem('profile')) {
 			Router.push('/auth');
 		}
 	}, []);

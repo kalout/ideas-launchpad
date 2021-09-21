@@ -5,7 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
-import { useRouter } from 'next/router';
+import router, { useRouter } from 'next/router';
 import AccountMenu from './AccountMenu';
 
 const Navbar = () => {
@@ -28,7 +28,7 @@ const Navbar = () => {
                 <Toolbar>
                     <div style={{ flex: "1", display: "flex" }}>
                         <Typography variant="h5" id="logo" component="div" className="mt-2 cursor"
-                            onClick={() => window.location.reload()}>
+                            onClick={() => router.push('/')}>
                             <i className="fa fa-rocket"></i> Ideas Launchpad
                         </Typography>
                     </div>
