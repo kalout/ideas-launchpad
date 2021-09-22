@@ -29,18 +29,22 @@ export const getServerSideProps = async context => {
     const { username, tab } = context.query;
     let user = await User.findOne({ username: username }), posts = [];
 
-    if (tab === 'posts')
+    if (tab === 'posts') {
         posts = await Post.find({ creator: String(user._id) });
+
+        if (posts?.length === 0)
+            posts = 'None';
+    }
 
     return {
         props: {
             user: {
                 id: String(user?._id),
                 username: user.username,
-                bio: user?.bio,
-                fullName: username?.fullName || ''
+                bio: user?.bio || '',
+                fullName: user?.fullName
             },
-            posts: posts?.map(post => ({
+            posts: posts === 'None' ? 'None' : posts?.map(post => ({
                 _id: String(post?._id),
                 title: post?.title,
                 description: post?.description,

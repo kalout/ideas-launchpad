@@ -15,8 +15,12 @@ const Auth = () => {
     const handleLogin = async form => {
         try {
             const { data } = await axios.post('/api/users/login', form);
-            setLocalStorage(data);
-            Router.push('/');
+            if (data?.token && data?.user) {
+                setLocalStorage(data);
+                Router.push('/');
+            } else {
+                window.location.reload();
+            }
         } catch (error) {
             setLoginError(error?.response?.data?.message)
         }
@@ -27,8 +31,12 @@ const Auth = () => {
     const handleSignup = async form => {
         try {
             const { data } = await axios.post('/api/users/signup', form);
-            setLocalStorage(data);
-            Router.push('/');
+            if (data?.token && data?.user) {
+                setLocalStorage(data);
+                Router.push('/');
+            } else {
+                window.location.reload();
+            }
         } catch (error) {
             setSignupError(error?.response?.data?.message)
         }
