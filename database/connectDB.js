@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 
-const MONGODB_URI = "mongodb+srv://admin-ali:test123@cluster0.8uyec.mongodb.net/meetups";
+const MONGODB_URI = process.env.DB_URI;
 
 if (!MONGODB_URI)
     throw new Error('Invalid URI!');

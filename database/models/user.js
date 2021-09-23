@@ -13,7 +13,8 @@ const userSchema = new mongoose.Schema({
     fullName: String,
     github: String,
     twitter: String,
-    personal: String
+    personal: String,
+    tagsFrequency: Object
 });
 
 export default mongoose?.models?.User || mongoose?.model('User', userSchema);

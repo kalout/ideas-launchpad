@@ -8,6 +8,8 @@ import Tab from '@mui/material/Tab';
 import PersonIcon from '@mui/icons-material/Person';
 import ArticleIcon from '@mui/icons-material/Article';
 import Settings from '@mui/icons-material/Settings';
+import { Bar } from 'react-chartjs-2';
+import { options } from './graphOptions';
 
 const randomHex = () => (Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
 
@@ -15,18 +17,37 @@ const Profile = ({ user, posts }) => {
     const router = useRouter();
     const src = `https://www.tinygraphs.com/spaceinvaders/${user?.username}?colors=${randomHex()}&colors=${randomHex()}`;
     const [regUser, setRegUser] = useState(null);
-    const [value, setValue] = useState(router?.query?.tab === 'overview' ? 0 : router?.query?.tab === 'posts' ? 1 : 0);
+    const [value, setValue] = useState(router?.query?.tab === 'overview' ?
+        0 : router?.query?.tab === 'posts' ? 1 : (router?.query?.tab === 'settings' && regUser?._id === user?.id)
+            ? 2 : 0);
 
-    useEffect(() => !regUser && setRegUser(JSON.parse(localStorage?.getItem('profile'))?.profile?.user), [regUser]);
+    useEffect(() => {
+        if (!regUser)
+            setRegUser(JSON.parse(localStorage?.getItem('profile'))?.profile?.user)
+        setValue(router?.query?.tab === 'overview' ?
+            0 : router?.query?.tab === 'posts' ? 1 : (router?.query?.tab === 'settings' && regUser?._id === user?.id)
+                ? 2 : 0);
+    }, [regUser, router?.query?.tab, user?.id]);
 
-    const handleChange = (event, newValue) => {
+    const handleChange = (_, newValue) => {
         setValue(newValue);
         if (newValue === 0)
             router.push(`/${user?.username}?tab=overview`);
         else if (newValue === 1)
             router.push(`/${user?.username}?tab=posts`);
         else if (newValue === 2 && regUser?._id === user?.id)
-            console.log('do something');
+            router.push(`/${user?.username}?tab=settings`);
+    };
+
+    const data = {
+        labels: Object?.keys(user?.tagsFrequency),
+        datasets: [{
+            label: '# of times tags used',
+            data: Object?.values(user?.tagsFrequency),
+            backgroundColor: ['#0275d8'],
+            borderColor: ['#292b2c'],
+            borderWidth: 1
+        }]
     };
 
     return (
@@ -38,7 +59,6 @@ const Profile = ({ user, posts }) => {
                     </div>
                     <h2 style={{ color: '#636D76' }}>{user?.fullName}</h2>
                     <h4 style={{ marginTop: '-8px', color: '#535C66' }}>{user?.username}</h4>
-                    connect to github Button
                     <hr></hr>
                 </Grid>
 
@@ -47,7 +67,7 @@ const Profile = ({ user, posts }) => {
                         <Tab value={0} label={
                             <div>
                                 <PersonIcon style={{ marginBottom: "5px" }} />&nbsp;
-                                <b style={{ letterSpacing: "1.1px", fontSize: "1.1rem" }}>Bio</b>
+                                <b style={{ letterSpacing: "1.1px", fontSize: "1.1rem" }}>Overview</b>
                             </div>}
                         />
                         <Tab value={1} label={
@@ -67,7 +87,15 @@ const Profile = ({ user, posts }) => {
                     </Tabs>
 
                     {router?.query?.tab === 'overview' ? (
-                        <p id='bio'>{user?.bio}</p>
+                        <>
+                            <p id='bio'>{user?.bio}</p>
+                            <hr></hr>
+                            {user?.tagsFrequency && (
+                                <>
+                                    <Bar data={data} options={options} />
+                                </>
+                            )}
+                        </>
                     ) : router?.query?.tab === 'posts' ? (
                         posts === 'None' ? (
                             <h6>This user has no ideas yet!</h6>
@@ -76,6 +104,8 @@ const Profile = ({ user, posts }) => {
                                 {posts?.map(post => <Post key={post.id} post={post} profileView={true} />)}
                             </Grid>
                         )
+                    ) : (router?.query?.tab === 'settings' && regUser?._id === user?.id) ? (
+                        <p>settings tab</p>
                     ) : (
                         <p id='bio'>{user?.bio}</p>
                     )}

@@ -1,6 +1,8 @@
 import connectDB from './../../../database/connectDB';
 import Post from './../../../database/models/post';
+import User from './../../../database/models/user';
 import jwt from 'jsonwebtoken';
+import _ from 'lodash';
 
 const handler = async (req, res) => {
     try {
@@ -29,6 +31,15 @@ const handler = async (req, res) => {
 
                 if (title?.length > 50 || body?.length > 500 || tags?.length > 5)
                     return res.status(405).json({ message: "Please stick to the char count !" });
+
+                const user = await User.findById(id), freq = user?.tagsFrequency || {};
+
+                for (let i = 0; i < tags?.length; i++) {
+                    tags[i] = _.lowerCase(tags[i]).split(' ').join('');
+                    freq[tags[i]] = freq[tags[i]] ? freq[tags[i]] + 1 : 1;
+                }
+
+                await User.findByIdAndUpdate(id, { tagsFrequency: freq }, { new: true });
 
                 const newPost = new Post({
                     title: title,
