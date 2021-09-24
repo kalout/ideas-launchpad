@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Paper, Grid, Typography, CircularProgress } from '@material-ui/core';
+import { Paper, Grid, Typography, CircularProgress, IconButton } from '@material-ui/core';
 import Link from 'next/link';
 import { getPostProposer } from './../../utils/apiCalls';
 import moment from 'moment';
@@ -9,7 +9,9 @@ import Button from '@mui/material/Button';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { votePost } from './../../utils/apiCalls';
+import { votePost, delPost } from './../../utils/apiCalls';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Router from 'next/router'
 
 const Post = ({ post, profileView }) => {
     const [userId, setUserId] = useState('');
@@ -53,6 +55,16 @@ const Post = ({ post, profileView }) => {
         console.log(tag);
     };
 
+    const handleDelete = async post => {
+        try {
+            await delPost(post._id);
+            Router.push(`/${post?.creatorUsername}`);
+        } catch (error) {
+            console.log(error);
+            console.log(error?.response?.data?.message);
+        }
+    };
+
     return (
         <>
             <Grid item xs={12} md={profileView ? 12 : 4}>
@@ -65,6 +77,11 @@ const Post = ({ post, profileView }) => {
                         </Grid>
                         <Grid item xs={3} style={{ textAlign: "right" }}>
                             <Chip label={post?.status} color={post?.status === 'NEW' ? 'warning' : 'primary'} variant="outlined" />
+                            {(profileView && userId === post?.creator) && (
+                                <IconButton style={{ color: "#f50057", margin: "-10px", marginLeft: "-5px" }} onClick={() => handleDelete(post)}>
+                                    <DeleteIcon />
+                                </IconButton>
+                            )}
                         </Grid>
                     </Grid>
 

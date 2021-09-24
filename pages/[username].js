@@ -43,7 +43,10 @@ export const getServerSideProps = async context => {
                 username: user.username,
                 bio: user?.bio || '',
                 fullName: user?.fullName,
-                tagsFrequency: user?.tagsFrequency || {}
+                tagsFrequency: user?.tagsFrequency || {},
+                github: user?.github || null,
+                twitter: user?.twitter || null,
+                personal: user?.personal || null
             },
             posts: posts === 'None' ? 'None' : posts?.map(post => ({
                 _id: String(post?._id),

@@ -10,6 +10,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import Settings from '@mui/icons-material/Settings';
 import { Bar } from 'react-chartjs-2';
 import { options } from './graphOptions';
+import ConnectLinks from './ConnectLinks';
 
 const randomHex = () => (Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
 
@@ -53,16 +54,23 @@ const Profile = ({ user, posts }) => {
     return (
         <div>
             <Grid container spacing={2}>
-                <Grid item md={4}>
-                    <div style={{ textAlign: "center" }}>
-                        <Image alt='pp' src={src} layout='responsive' width={300} height={300} />
-                    </div>
-                    <h2 style={{ color: '#636D76' }}>{user?.fullName}</h2>
-                    <h4 style={{ marginTop: '-8px', color: '#535C66' }}>{user?.username}</h4>
-                    <hr></hr>
+                <Grid item md={4} xs={12}>
+                    <Grid container spacing={2}>
+                        <Grid item md={12} xs={5}>
+                            <div style={{ textAlign: "center" }}>
+                                <Image alt='pp' src={src} layout='responsive' width={300} height={300} />
+                            </div>
+                        </Grid>
+                        <Grid item md={12} xs={7}>
+                            <h2 style={{ color: '#636D76' }}>{user?.fullName}</h2>
+                            <h4 style={{ marginTop: '-8px', color: '#535C66' }}>{user?.username}</h4>
+                            <hr></hr>
+                            <ConnectLinks user={user} />
+                        </Grid>
+                    </Grid>
                 </Grid>
 
-                <Grid item md={8}>
+                <Grid item md={8} xs={12}>
                     <Tabs value={value} onChange={handleChange} variant="fullWidth" className="mb-3">
                         <Tab value={0} label={
                             <div>
@@ -90,7 +98,7 @@ const Profile = ({ user, posts }) => {
                         <>
                             <p id='bio'>{user?.bio}</p>
                             <hr></hr>
-                            {user?.tagsFrequency && (
+                            {(user?.tagsFrequency && Object.keys(user?.tagsFrequency).length !== 0) && (
                                 <>
                                     <Bar data={data} options={options} />
                                 </>
@@ -107,7 +115,15 @@ const Profile = ({ user, posts }) => {
                     ) : (router?.query?.tab === 'settings' && regUser?._id === user?.id) ? (
                         <p>settings tab</p>
                     ) : (
-                        <p id='bio'>{user?.bio}</p>
+                        <>
+                            <p id='bio'>{user?.bio}</p>
+                            <hr></hr>
+                            {(user?.tagsFrequency && Object.keys(user?.tagsFrequency).length !== 0) && (
+                                <>
+                                    <Bar data={data} options={options} />
+                                </>
+                            )}
+                        </>
                     )}
                 </Grid>
             </Grid>
