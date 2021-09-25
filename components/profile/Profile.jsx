@@ -11,6 +11,7 @@ import Settings from '@mui/icons-material/Settings';
 import { Bar } from 'react-chartjs-2';
 import { options } from './graphOptions';
 import ConnectLinks from './ConnectLinks';
+import SettingsTab from './Settings';
 
 const randomHex = () => (Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
 
@@ -113,7 +114,7 @@ const Profile = ({ user, posts }) => {
                             </Grid>
                         )
                     ) : (router?.query?.tab === 'settings' && regUser?._id === user?.id) ? (
-                        <p>settings tab</p>
+                        <SettingsTab user={user} />
                     ) : (
                         <>
                             <p id='bio'>{user?.bio}</p>
