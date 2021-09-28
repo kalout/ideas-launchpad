@@ -7,7 +7,7 @@ import LinkIcon from '@mui/icons-material/Link';
 const ConnectLinks = ({ user }) => {
     return (
         <div>
-            {user?.github && (
+            {user?.personal && (
                 <div className="mb-2" style={{ fontSize: "0.9rem", color: '#4a5159' }}>
                     <b>
                         <LinkIcon style={{ marginBottom: "4px" }} /> &nbsp;

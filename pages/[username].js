@@ -30,7 +30,7 @@ export const getServerSideProps = async context => {
     let user = await User.findOne({ username: username }), posts = [];
 
     if (tab === 'posts') {
-        posts = await Post.find({ creator: String(user._id) });
+        posts = await Post.find({ creator: String(user._id) }).sort({ _id: -1 });
 
         if (posts?.length === 0)
             posts = 'None';
@@ -40,7 +40,7 @@ export const getServerSideProps = async context => {
         props: {
             user: {
                 id: String(user?._id),
-                username: user.username,
+                username: user?.username || '',
                 bio: user?.bio || '',
                 fullName: user?.fullName,
                 tagsFrequency: user?.tagsFrequency || {},

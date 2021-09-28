@@ -10,6 +10,7 @@ import delLocalStorage from './../../utils/delLocalStorage';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import NewPostModal from './../post/NewPostModal';
 import router from 'next/router';
+import ArticleIcon from '@mui/icons-material/Article';
 
 const AccountMenu = ({ anchorEl, open, handleClose, user }) => {
     const [openPM, setOpenPM] = useState(false);
@@ -62,12 +63,19 @@ const AccountMenu = ({ anchorEl, open, handleClose, user }) => {
                     </ListItemIcon>
                     New idea
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={() => router.push(`/${user?.username}?tab=posts`)}>
+                    <ListItemIcon>
+                        <ArticleIcon fontSize="small" />
+                    </ListItemIcon>
+                    Ideas
+                </MenuItem>
+                <MenuItem onClick={() => router.push(`/${user?.username}?tab=settings`)}>
                     <ListItemIcon>
                         <Settings fontSize="small" />
                     </ListItemIcon>
                     Settings
                 </MenuItem>
+                <Divider />
                 <MenuItem onClick={() => delLocalStorage()}>
                     <ListItemIcon>
                         <Logout fontSize="small" />
