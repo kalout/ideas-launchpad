@@ -3,6 +3,8 @@ import Head from 'next/head';
 import Post from './../database/models/post';
 import connectDB from './../database/connectDB';
 import Posts from './../components/post/Posts';
+import Search from './../components/search/Search';
+import _ from 'lodash';
 
 // TODO: add contibuter list, only the proposer(creator) can modify them
 
@@ -13,17 +15,25 @@ const Index = ({ posts }) => {
                 <title>Home</title>
             </Head>
             <Container maxWidth="lg" className="p-3">
-                <h1>Home</h1>
+                <Search />
                 <Posts posters={posts} />
             </Container>
         </>
     );
 }
 
-export const getStaticProps = async context => {
+export const getServerSideProps = async context => {
+    let { search, tags } = context?.query, posts;
+    tags = tags?.split(',')?.filter(tag => tag?.length > 0)?.map(tag => _?.lowerCase(tag)?.split(' ')?.join(''));
     await connectDB();
-    const page = 1, LIMIT = 12, startIndex = (Number(page) - 1) * LIMIT;
-    let posts = await Post.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
+
+    if (!search?.length && !tags?.length) {
+        const page = 1, LIMIT = 12, startIndex = (Number(page) - 1) * LIMIT;
+        posts = await Post.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
+    } else {
+        const regex = new RegExp(search, 'i');
+        posts = await Post.find({ $or: [{ title: regex }, { description: regex }, { tags: { $in: tags } }] });
+    }
 
     return {
         props: {
@@ -39,8 +49,7 @@ export const getStaticProps = async context => {
                 status: post?.status ? post?.status : '',
                 creatorUsername: post?.creatorUsername ? post?.creatorUsername : ''
             }))
-        },
-        revalidate: 5
+        }
     }
 }
 
