@@ -48,7 +48,17 @@ export const getServerSideProps = async context => {
 
     } else {
         const regex = new RegExp(search, 'i');
-        posts = await Post.find({ $or: [{ title: regex }, { description: regex }, { tags: { $in: tags } }] });
+        posts = orderKey === 'date' ? (
+            orderValue === '1' ? await Post.find({ $or: [{ title: regex }, { description: regex }, { tags: { $in: tags } }] }).
+                sort({ _id: 1 }) : await Post.find({ $or: [{ title: regex }, { description: regex }, { tags: { $in: tags } }] }).
+                    sort({ _id: -1 })
+        ) : (
+            orderKey === 'votes' ? (
+                orderValue === '1' ? await Post.find({ $or: [{ title: regex }, { description: regex }, { tags: { $in: tags } }] }).
+                    sort({ _id: 1 }) : await Post.find({ $or: [{ title: regex }, { description: regex }, { tags: { $in: tags } }] }).
+                        sort({ _id: -1 })
+            ) : ([])
+        );
     }
 
     return {

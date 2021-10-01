@@ -13,7 +13,7 @@ import { votePost, delPost } from './../../utils/apiCalls';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Router from 'next/router'
 
-const Post = ({ post, profileView }) => {
+const Post = ({ post, profileView, view }) => {
     const [userId, setUserId] = useState('');
     const [proposer, setProposer] = useState();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -65,7 +65,7 @@ const Post = ({ post, profileView }) => {
 
     return (
         <>
-            <Grid item xs={12} md={profileView ? 12 : 4}>
+            <Grid item xs={12} md={(profileView || view) ? 12 : 4}>
                 <Paper elevation={3} style={{ padding: "15px" }} onMouseOver={handleHover}>
                     <Grid container>
                         <Grid item xs={9}>
@@ -85,8 +85,16 @@ const Post = ({ post, profileView }) => {
 
                     <hr />
 
-                    <Typography variant="body1" component="p" display="inline">
-                        {post?.description?.substring(0, 200)}{post?.description?.length > 200 ? ' ...' : ''}
+                    <Typography variant="body1" component="pre" display="inline">
+                        {!view ? (
+                            <>
+                                {post?.description?.substring(0, 200)}{post?.description?.length > 200 ? ' ...' : ''}
+                            </>
+                        ) : (
+                            <>
+                                {post?.description}
+                            </>
+                        )}
                     </Typography>
 
                     <div className="mt-3">

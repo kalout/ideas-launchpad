@@ -6,7 +6,7 @@ import { Button } from '@material-ui/core';
 import Router from 'next/router';
 import { editUser } from './../../utils/apiCalls';
 import delLocalStorage from './../../utils/delLocalStorage';
-import GitHubLogin from 'react-github-login';
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 const Settings = ({ user }) => {
     const [account, setAccount] = useState(user);
@@ -67,6 +67,17 @@ const Settings = ({ user }) => {
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
+                            label="GitHub Account" fullWidth name="github"
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">
+                                    <GitHubIcon />
+                                </InputAdornment>,
+                            }}
+                            variant="filled" value={account?.github} onChange={handleChange}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
                             label="Twitter Account" fullWidth name="twitter"
                             InputProps={{
                                 startAdornment: <InputAdornment position="start">
@@ -95,10 +106,6 @@ const Settings = ({ user }) => {
                         </Button><br />
                         <small>After saving changes you will be logged out!</small>
                     </Grid>
-                    {/* <GitHubLogin clientId="6287857b8f86b1df9081"
-                    redirectUri="" 
-                    onSuccess={res => console.log(res)}
-                    onFailure={res => console.log(res)} /> */}
                 </Grid>
             </div>
         </>
