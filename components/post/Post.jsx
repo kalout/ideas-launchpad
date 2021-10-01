@@ -51,9 +51,7 @@ const Post = ({ post, profileView }) => {
 
     const handleHover = async () => !proposer && setProposer((await getPostProposer(post?.creator))?.data);
 
-    const handleClick = tag => {
-        console.log(tag);
-    };
+    const handleClick = tag => Router.push(`/?tags=${tag}`);
 
     const handleDelete = async post => {
         try {
