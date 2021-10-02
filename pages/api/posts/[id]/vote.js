@@ -27,7 +27,9 @@ const handler = async (req, res) => {
                 post.downVotes = post.downVotes.filter(x => x !== decodedData.id);
             }
 
+            const newVotes = post?.upVotes.length - post?.downVotes.length;
             await Post.findByIdAndUpdate(id, post);
+            await Post.findByIdAndUpdate(id, { votes: newVotes }, { new: false });
             return res.status(200).json({ message: 'OK' });
         }
         return res.status(400).json({ error: 'Invalid request' });

@@ -88,7 +88,8 @@ const Post = ({ post, profileView, view }) => {
                     <Typography variant="body1" component="pre" display="inline">
                         {!view ? (
                             <>
-                                {post?.description?.substring(0, 200)}{post?.description?.length > 200 ? ' ...' : ''}
+                                {post?.description?.substring(0, 200)?.replace(/(^[ \t]*\n)/gm, "")}
+                                {post?.description?.length > 200 ? ' ...' : ''}
                             </>
                         ) : (
                             <>

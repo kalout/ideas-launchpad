@@ -6,8 +6,6 @@ import Posts from './../components/post/Posts';
 import Search from './../components/search/Search';
 import _ from 'lodash';
 
-// TODO: add contibuter list, only the proposer(creator) can modify them
-
 const Index = ({ posts }) => {
     return (
         <>
@@ -42,7 +40,7 @@ export const getServerSideProps = async context => {
             orderValue === '1' ? await Post.find().sort({ _id: 1 }) : await Post.find().sort({ _id: -1 })
         ) : (
             orderKey === 'votes' ? (
-                orderValue === '1' ? await Post.find().sort({ _id: 1 }) : await Post.find().sort({ _id: -1 })
+                orderValue === '1' ? await Post.find().sort({ votes: 1 }) : await Post.find().sort({ votes: -1 })
             ) : ([])
         );
 
@@ -50,13 +48,13 @@ export const getServerSideProps = async context => {
         const regex = new RegExp(search, 'i');
         posts = orderKey === 'date' ? (
             orderValue === '1' ? await Post.find({ $or: [{ title: regex }, { description: regex }, { tags: { $in: tags } }] }).
-                sort({ _id: 1 }) : await Post.find({ $or: [{ title: regex }, { description: regex }, { tags: { $in: tags } }] }).
-                    sort({ _id: -1 })
+                sort({ votes: 1 }) : await Post.find({ $or: [{ title: regex }, { description: regex }, { tags: { $in: tags } }] }).
+                    sort({ votes: -1 })
         ) : (
             orderKey === 'votes' ? (
                 orderValue === '1' ? await Post.find({ $or: [{ title: regex }, { description: regex }, { tags: { $in: tags } }] }).
-                    sort({ _id: 1 }) : await Post.find({ $or: [{ title: regex }, { description: regex }, { tags: { $in: tags } }] }).
-                        sort({ _id: -1 })
+                    sort({ votes: 1 }) : await Post.find({ $or: [{ title: regex }, { description: regex }, { tags: { $in: tags } }] }).
+                        sort({ votes: -1 })
             ) : ([])
         );
     }

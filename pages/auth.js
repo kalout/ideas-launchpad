@@ -5,9 +5,13 @@ import axios from 'axios';
 import Head from 'next/head';
 import Router from 'next/router';
 import { Paper, Grid, Button } from '@material-ui/core';
+import { makeStyles } from "@material-ui/core/styles";
 import setLocalStorage from './../utils/setLocalStorage';
 
+const useStyles = makeStyles(theme => ({ paperRoot: { backgroundColor: '#0275d8' } }));
+
 const Auth = () => {
+    const classes = useStyles();
     const [haveAccount, setHaveAccount] = useState(true);
 
     // Login
@@ -47,9 +51,13 @@ const Auth = () => {
             <Head>
                 <title>Authentication</title>
             </Head>
-            <Grid container spacing={2}>
+            <Grid container spacing={0}>
                 <Grid item md={6} sm={12}>
-                    <h1>Auth</h1>
+                    <Paper className="p-3" classes={{ root: classes.paperRoot }} style={{ color: 'white' }}>
+                        <h2>Launchpad</h2>
+                        <hr></hr>
+                        <h3>Easily find the idea for your next app, and contribute with other developers</h3>
+                    </Paper>
                 </Grid>
                 <Grid item md={6} sm={12}>
                     <Paper className="p-3">

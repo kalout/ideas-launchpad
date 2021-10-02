@@ -46,7 +46,7 @@ const NewPostModal = ({ open, handleClose }) => {
     }
 
     return (
-        <Modal open={open} onClose={handleClose}>
+        <Modal open={open} onClose={handleClose} size>
             <Box sx={style}>
                 <Typography variant="h4" component="h2">New Idea</Typography>
                 <hr />
@@ -56,7 +56,7 @@ const NewPostModal = ({ open, handleClose }) => {
                     {form?.title?.length} / 50
                 </small>
                 <TextField variant="standard" name="body" label="Body" multiline autoComplete="off"
-                    onChange={handleChange} rows={6} className="mt-2 mb-2" fullWidth value={form?.body} />
+                    onChange={handleChange} minRows={6} className="mt-2 mb-2" fullWidth value={form?.body} />
                 <small style={{ float: "right", marginTop: "-9px" }} className={form?.body?.length > 500 && 'text-danger'}>
                     {form?.body?.length} / 500
                 </small>

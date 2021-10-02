@@ -56,7 +56,7 @@ const AccountMenu = ({ anchorEl, open, handleClose, user }) => {
                 <MenuItem onClick={() => router.push(`/${user?.username}?tab=overview`)}>
                     <Avatar>{user?.username?.charAt(0)}</Avatar> {user?.username}
                 </MenuItem>
-                <Divider />
+                <Divider className="mt-2 mb-2" />
                 <MenuItem onClick={handleOpenPM}>
                     <ListItemIcon>
                         <PostAddIcon fontSize="small" />
@@ -75,7 +75,7 @@ const AccountMenu = ({ anchorEl, open, handleClose, user }) => {
                     </ListItemIcon>
                     Settings
                 </MenuItem>
-                <Divider />
+                <Divider className="mt-2 mb-2" />
                 <MenuItem onClick={() => delLocalStorage()}>
                     <ListItemIcon>
                         <Logout fontSize="small" />
