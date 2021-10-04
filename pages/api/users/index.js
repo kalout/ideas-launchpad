@@ -14,7 +14,7 @@ const handler = async (req, res) => {
             if (!savedUser)
                 return res.status(401).json({ message: "User doesn't exist !" });
 
-            const { user, password } = req?.body;
+            const { user, password, newPassword } = req?.body;
 
             if (password !== savedUser?.password)
                 return res.status(401).json({ message: "Wrong password !" });
@@ -31,6 +31,9 @@ const handler = async (req, res) => {
                 return res.status(401).json({ message: "Username must be lowercase !" });
 
             await User.findByIdAndUpdate(decodedData?.id, user, { new: true });
+
+            if (newPassword?.length > 0)
+                await User.findByIdAndUpdate(decodedData?.id, { password: newPassword }, { new: false });
 
             if (savedUser?.username !== user?.username) {
                 const posts = await Post.find({ creator: decodedData?.id });

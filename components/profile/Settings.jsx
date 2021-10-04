@@ -10,8 +10,9 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 
 const Settings = ({ user }) => {
     const [account, setAccount] = useState(user);
-    const [error, setError] = useState(null);
     const [password, setPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => setAccount(user), [user]);
@@ -25,7 +26,7 @@ const Settings = ({ user }) => {
 
     const handleSubmit = async () => {
         setLoading(true);
-        const data = { user: account, password: password };
+        const data = { user: account, newPassword: newPassword, password: password };
 
         try {
             await editUser(data);
@@ -42,6 +43,9 @@ const Settings = ({ user }) => {
             <hr></hr>
             <div className="mt-3 mb-3">
                 <Grid container spacing={2}>
+                    <Grid item xs={12} style={{ marginBottom: "-15px" }}>
+                        <h4>User Information</h4>
+                    </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField label="Username" name="username" value={account?.username} onChange={handleChange}
                             variant="filled" fullWidth />
@@ -87,10 +91,21 @@ const Settings = ({ user }) => {
                             variant="filled" value={account?.twitter} onChange={handleChange}
                         />
                     </Grid>
+                    <Grid item xs={12} className="mt-2" style={{ marginBottom: "-15px" }}>
+                        <h4>Password</h4>
+                    </Grid>
                     <Grid item xs={12}>
                         <TextField
-                            className="mt-3" type="password"
-                            label="Current Password" fullWidth variant="filled"
+                            type="password" label="New Password" fullWidth variant="filled"
+                            value={newPassword} onChange={e => setNewPassword(e.target.value)}
+                        />
+                        <div style={{ textAlign: "right" }}>
+                            <small><b>Leave this blank if you don&apos;t wish to change you password!</b></small>
+                        </div>
+                    </Grid>
+                    <Grid item xs={12} className="mt-3">
+                        <TextField
+                            type="password" label="Current Password" fullWidth variant="filled"
                             value={password} onChange={e => setPassword(e.target.value)}
                         />
                     </Grid>
@@ -104,7 +119,7 @@ const Settings = ({ user }) => {
                         <Button color="primary" variant="contained" onClick={handleSubmit} disabled={loading}>
                             {loading ? 'Loading...' : 'Save Changes'}
                         </Button><br />
-                        <small>After saving changes you will be logged out!</small>
+                        <small><b>After saving changes you will be logged out!</b></small>
                     </Grid>
                 </Grid>
             </div>
