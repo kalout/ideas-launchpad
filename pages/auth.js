@@ -8,7 +8,7 @@ import { Paper, Grid, Button } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import setLocalStorage from './../utils/setLocalStorage';
 
-const useStyles = makeStyles(theme => ({ paperRoot: { backgroundColor: '#0275d8' } }));
+const useStyles = makeStyles(theme => ({ paperRoot: { backgroundColor: '#3F51B5' } }));
 
 const Auth = () => {
     const classes = useStyles();

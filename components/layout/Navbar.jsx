@@ -28,7 +28,7 @@ const Navbar = () => {
                 <Toolbar>
                     <div style={{ flex: "1", display: "flex" }}>
                         <Typography variant="h5" id="logo" component="div" className="mt-2 cursor"
-                            onClick={() => router.push('/')}>
+                            onClick={() => localStorage?.getItem('profile') ? router.push('/') : router.push('/auth')}>
                             <i className="fa fa-rocket"></i> Ideas Launchpad
                         </Typography>
                     </div>
